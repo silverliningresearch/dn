@@ -1,0 +1,225 @@
+<html>
+    <head>
+		<title>Aalborg Tall Ships Race 2026</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.svg">
+
+    <script src="data/quota_data.js"></script>
+    <script src="data/invalid_cases.js"></script>
+    
+    <script src="scripts/PrepareData.js"></script>
+		<script src="scripts/CalculateData.js"></script>
+
+   <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_sur_v3/Aalborg_Event/interview_statistics.js"></script>
+
+
+    <link href="css/styles_v2.css" rel ="stylesheet" type="text/css" />
+    <style>
+      .table-font {
+        font-size: 16px;
+        /* height: 18px; */
+      }
+
+      .filter-font {
+        font-size: 16px;
+        /* height: 18px; */
+      }
+
+      .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        width: 300px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+
+      .red {background-color: #f44336;;} /* Red */
+      .blue {background-color: #0693e3;} /* Blue */ 
+
+
+      .headerbackground {background-color: #66CCFF;;} /* Blue */ 
+      
+
+      h1 {text-align: center;}
+
+
+    </style>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      //google.charts.load('current', {'packages':['table']});
+      google.charts.load('current', {'packages':['table','corechart', 'controls']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+ 
+        CalculateArrival();
+        // PreparaArrivalData();
+        
+        var data = new google.visualization.DataTable();
+
+        // data.addColumn({
+        //   type: 'string', 
+        //   label: 'Location', 
+        //   p: { className: 'fixed-column' } 
+        // });
+
+        // data.addColumn({
+        //   type: 'string', 
+        //   label: 'Exit (%)', 
+        //   p: { className: 'fixed-column' } 
+        // });
+
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Interviewer');
+        data.addColumn('number', 'Number of interviews');
+
+        //sort ascending
+        // quota_data.sort(function(a, b) {
+        //   return (parseFloat(a.Date_Time) - parseFloat(b.Date_Time));
+        // });
+
+        //add data
+        for (i = 0; i < quota_data.length; i++) {
+          var row = quota_data[i];
+            { 
+                data.addRows([[
+                row.InterviewDate, 
+                row.InterviewerID,
+                row["Number of interviews"],              
+              ]],
+              );
+            }
+          }
+
+        //create a dashboard.
+        var dashboard = new google.visualization.Dashboard(
+        document.getElementById('dashboard_div'));
+
+         //create fiter Date 
+          var options_Date = {
+          'filterColumnLabel': 'Date',
+          "ui": {"label": "", 
+                "labelStacking": 'horizotal',
+                "caption": "Select Date",
+                }
+        };
+
+        //create fiter
+        var tableFilter = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_div',
+          'options': options_Date
+        });
+  
+        
+         //create fiter Interviewer 
+          var options_Interviewer = {
+          'filterColumnLabel': 'Interviewer',
+          "ui": {"label": "", 
+                "labelStacking": 'horizotal',
+                "caption": "Select Interviewer",
+                }
+        };
+
+        //create fiter
+        var interviewerFilter = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'Interviewer_filter_div',
+          'options': options_Interviewer
+        });
+
+        // Create table
+        var tableChart = new google.visualization.ChartWrapper({
+          'chartType': 'Table',
+          'containerId': 'table_div',
+          'options': {
+            'allowHtml': true, 
+            'cssClassNames': {tableCell: 'table-font', headerRow: 'headerbackground', headerCell: 'googleHeaderCell' },
+             'sortColumn': 0, //time
+             'sortAscending': false,
+            'showRowNumber': false, 'width': '40%', 'height': '40%'
+          }
+        });
+
+        dashboard.bind([tableFilter, interviewerFilter], tableChart);
+
+        var view = new google.visualization.DataView(data);
+        // document.getElementById("filter_div").style.display = "none";
+
+        // 4. Use the 'ready' event for jQuery fixes
+        google.visualization.events.addListener(view, 'ready', function () {
+          // Ensure the header (th) also respects the width of the cells (td)
+          $('.fixed-column').css({
+            'width': '200px',
+            'min-width': '200px',
+            'max-width': '200px',
+            'white-space': 'normal',
+            'word-break': 'break-word'
+          });
+        });
+
+        dashboard.draw(view);
+
+        //overall_status
+        var overall_arrival_status = "Total completed: " + total_completed;
+        document.getElementById("overall_arrival_status").innerHTML =overall_arrival_status;
+
+      }
+    </script>
+  </head>
+  <body>
+
+  <script>
+    function start_new_interview() {
+      console.log("start_new_interview");
+      window.localStorage.clear();
+
+      let url = "https://silverliningresearch.github.io/atsr/restart.html";
+      window.location.href = url;
+    }
+
+    function resume_curent_interview() {
+      console.log("resume_curent_interview");
+      let url = "https://silverliningresearch.github.io/atsr/survey.html";
+      window.location.href = url;
+    }
+
+</script>
+  </br>
+  <h2 align="center">Aalborg Tall Ships Race 2026</h2>
+  </br>
+
+  <div align="center">
+    <button onclick="start_new_interview()" class="button red">Start a new interview</button>
+    <button onclick="resume_curent_interview()" class="button blue">Resume the current interview </button>
+  </div>
+
+  <p>
+	</br>
+    *<strong>Resume the current interview</strong> will continue from the last question in the current interview.</br>
+	</br> 
+  </p>
+
+    <div style="background-color:#66CCFF;">
+      </br>
+    </div>
+   
+    <h4 id="overall_arrival_status"></h4>
+
+    <div id="dashboard_div">
+      <!--Divs that will hold each control and chart-->
+      <div id="filter_div"></div>
+      <div id="Interviewer_filter_div"></div>
+      
+      </br>      
+      <div id="table_div"></div>
+    
+    </div>
+
+  </body>
+</html>

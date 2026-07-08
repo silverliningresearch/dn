@@ -1,0 +1,45 @@
+#inputFlightCodeID {
+    padding: 5px 5px;
+    font-size: 18px;
+    border: 2px solid grey;
+    float: left; 
+    width: 50%;
+    background: #f1f1f1;
+    margin: 0;
+    position: relative;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+   -webkit-text-size-adjust
+} 
+
+#center_ {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    border: 3px solid green; 
+  }
+
+
+  /* Base Button Styles (e.g., for a standard button) */
+.my-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  /* Crucial: Hide the default 'donut/black circle' */
+  outline: none; 
+}
+
+/* The Custom 'Filled Button' Focus Style */
+.focus-glow {
+  /* Use a multi-layer box-shadow to simulate a high-contrast 'fill' */
+  box-shadow: 
+    0 0 0 3px #fff,             /* Inner white ring for contrast */
+    0 0 0 6px rgba(255, 193, 7, 0.9); /* Outer colored ring (the 'fill') */
+}
+  
